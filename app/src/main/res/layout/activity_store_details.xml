@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:descendantFocusability="blocksDescendants"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/storeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/restaurant" />
+
+        <TextView
+            android:id="@+id/storeNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/storeImageView"
+            android:layout_alignTop="@id/storeImageView"
+            android:layout_alignEnd="@id/storeImageView"
+            android:layout_alignBottom="@id/reviewsLayout"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="-1dp"
+            android:layout_marginBottom="-1dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+
+        <RelativeLayout
+            android:id="@+id/reviewsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/storeImageView"
+            android:background="@color/colorPrimaryDarkOpacity75">
+
+            <ImageButton
+                android:id="@+id/starButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:src="@drawable/baseline_star_black_24dp"
+                android:tint="@color/yellow" />
+
+            <TextView
+                android:id="@+id/reviewNumTV"
+                style="style/TextAppearance.Material.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/starButton"
+                android:text="@string/reviews0"
+                android:textColor="@color/white"
+
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/storeDescriptionTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reviewsLayout"
+            android:padding="@dimen/padding_page"
+            android:textColor="@color/colorTextIcons"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/reviewsTitleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storeDescriptionTV"
+            android:gravity="center_horizontal"
+            android:text="@string/reviewss"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorTextIcons"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reviewsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reviewsTitleTV">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

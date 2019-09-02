@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.coolfood">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".AccountActivity"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="CoolFood"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/Theme.Project.Activity1" />
+        <activity android:name=".ReviewActivity" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:label="CoolFood"
+            android:parentActivityName=".OfferDetailsActivity"
+            android:theme="@style/Theme.Project.Activity1" />
+        <activity
+            android:name=".OfferDetailsActivity"
+            android:label="CoolFood"
+            android:parentActivityName=".OffersActivity"
+            android:theme="@style/Theme.Project.Activity1" />
+        <activity
+            android:name=".StoreDetailsActivity"
+            android:label="CoolFood"
+            android:theme="@style/Theme.Project.Activity1" />
+        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".OffersActivity"
+            android:label="CoolFood"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/Theme.Project.Activity1" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDSts4rGTp5qxBncywb8nhfkES54nQlIE8" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <service
+            android:name=".firebase.MyMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+</manifest>

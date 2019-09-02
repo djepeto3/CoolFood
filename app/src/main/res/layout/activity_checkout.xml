@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/offerIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/restaurant" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/line"
+                    android:showDividers="middle"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_page"
+                    >
+
+                    <TextView
+                        android:id="@+id/offerNameTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:drawableStart="@drawable/baseline_restaurant_menu_black_18dp"
+                        android:drawableTint="@color/colorTextIcons"
+                        android:gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@color/colorTextIcons" />
+
+                    <TextView
+                        android:id="@+id/restaurantAddressTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:drawableStart="@drawable/baseline_location_on_black_18dp"
+                        android:drawableTint="@color/colorTextIcons"
+                        android:gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@color/colorTextIcons" />
+
+                    <TextView
+                        android:id="@+id/pickupTimeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:drawableStart="@drawable/baseline_timer_black_18dp"
+                        android:drawableTint="@color/colorTextIcons"
+                        android:gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@color/colorTextIcons" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:drawableStart="@drawable/baseline_exposure_plus_1_black_18dp"
+                            android:drawableTint="@color/colorTextIcons"
+                            android:gravity="center_vertical"
+                            android:text="@string/quantity"
+                            android:textColor="@color/colorTextIcons" />
+
+                        <ImageButton
+                            android:id="@+id/decQuantityIB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:background="@null"
+                            android:padding="0dp"
+                            android:src="@drawable/baseline_remove_circle_outline_black_18dp"
+                            android:tint="@color/colorPrimaryDark" />
+
+                        <TextView
+                            android:id="@+id/quantityCounterTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:text=""
+                            android:textColor="@color/colorTextIcons"
+                            android:textSize="20sp" />
+
+                        <ImageButton
+                            android:id="@+id/incQuantityIB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:padding="0dp"
+                            android:src="@drawable/baseline_add_circle_outline_black_18dp"
+                            android:tint="@color/colorPrimaryDark" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totalPriceTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="@dimen/padding_page"
+                    android:text="@string/din0"
+                    android:textColor="@color/colorTextIcons"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/confirmBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/padding_page"
+            android:background="@drawable/buttonstyle"
+            android:text="CONFIRM"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

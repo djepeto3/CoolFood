@@ -1,0 +1,192 @@
+package com.example.coolfood;
+
+import android.content.Intent;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.coolfood.model.Offer;
+import com.example.coolfood.model.Order;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
+import java.util.UUID;
+
+public class CheckoutActivity extends AppCompatActivity {
+
+    private TextView offerNameTV;
+    private TextView restaurantAddressTV;
+    private TextView pickupTimeTV;
+    private ImageView offerIV;
+    private TextView quantityCounterTV;
+    private ImageButton decQuantityIB;
+    private ImageButton incQuantityIB;
+    private Button confirmBtn;
+    private TextView totalPriceTV;
+
+    private String offerId = "";
+    private String restaurantAddress = "";
+    private String storeId = "";
+    private String restaurantName = "";
+    private int price = 0;
+    DatabaseReference databaseReference;
+    DatabaseReference orderDatabaseRef;
+    private FirebaseAuth firebaseAuth;
+    int maxQuantity = 0;
+    private Offer offer;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_checkout);
+
+        offerNameTV = (TextView) findViewById(R.id.offerNameTV);
+        restaurantAddressTV = (TextView) findViewById(R.id.restaurantAddressTV);
+        pickupTimeTV = (TextView) findViewById(R.id.pickupTimeTV);
+        offerIV = (ImageView) findViewById(R.id.offerIV);
+        quantityCounterTV = findViewById(R.id.quantityCounterTV);
+        decQuantityIB = findViewById(R.id.decQuantityIB);
+        decQuantityIB.setEnabled(false);
+        decQuantityIB.setColorFilter(getColor(R.color.grey));
+        incQuantityIB = findViewById(R.id.incQuantityIB);
+        confirmBtn = findViewById(R.id.confirmBtn);
+        confirmBtn.setEnabled(false);
+        decQuantityIB.setColorFilter(getColor(R.color.grey));
+        totalPriceTV = findViewById(R.id.totalPriceTV);
+
+        quantityCounterTV.setText("0");
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+        final Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        orderDatabaseRef = FirebaseDatabase.getInstance().getReference("OrderActive");
+
+        if (intent != null) {
+            offerId = extras.getString("offerId");
+            restaurantAddress = extras.getString("restaurantAddress");
+            restaurantName = extras.getString("restaurantName");
+            storeId = extras.getString("storeId");
+        }
+        if (!offerId.isEmpty() && offerId != null) {
+            databaseReference = FirebaseDatabase.getInstance().getReference("Offer");
+            databaseReference.child(offerId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    offer = dataSnapshot.getValue(Offer.class);
+                    Picasso.get().load(offer.getImgUrl()).into(offerIV);
+                    offerNameTV.setText(offer.getName());
+                    pickupTimeTV.setText(offer.getDate() + "  /  " + offer.getPickupFrom() + " - " + offer.getPickupUntil());
+                    restaurantAddressTV.setText(restaurantAddress);
+                    maxQuantity = Integer.parseInt(offer.getQuantity());
+                    price = Integer.parseInt(offer.getPrice());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        incQuantityIB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(quantityCounterTV.getText().toString());
+                if (quantity < maxQuantity) {
+                    quantity += 1;
+                    confirmBtn.setEnabled(true);
+                    decQuantityIB.setColorFilter(getColor(R.color.colorPrimaryDark));
+                }
+                if (quantity == 1)
+                    decQuantityIB.setColorFilter(getColor(R.color.grey));
+                if (quantity > 0 && quantity != 1) {
+                    decQuantityIB.setEnabled(true);
+                    decQuantityIB.setColorFilter(getColor(R.color.colorPrimaryDark));
+                }
+                if (quantity == maxQuantity) {
+                    incQuantityIB.setEnabled(false);
+                    incQuantityIB.setColorFilter(getColor(R.color.grey));
+                }
+
+                quantityCounterTV.setText(Integer.toString(quantity));
+                totalPriceTV.setText(getString(R.string.total) + Integer.toString(quantity * price) + " din.");
+            }
+        });
+
+        decQuantityIB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(quantityCounterTV.getText().toString());
+                if (quantity > 1)
+                    quantity -= 1;
+                if (quantity == 1) {
+                    decQuantityIB.setEnabled(false);
+                    decQuantityIB.setColorFilter(getColor(R.color.grey));
+                }
+                if (quantity < maxQuantity) {
+                    incQuantityIB.setEnabled(true);
+                    incQuantityIB.setColorFilter(getColor(R.color.colorPrimaryDark));
+                }
+                quantityCounterTV.setText(Integer.toString(quantity));
+                totalPriceTV.setText(getString(R.string.total) + Integer.toString(quantity * price) + " din.");
+            }
+        });
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uuid = UUID.randomUUID().toString();
+                Order order = new Order(getIntent().getStringExtra("restaurantName"), user.getEmail(), offer.getPickupFrom(), offer.getPickupUntil(), Integer.toString(price * Integer.parseInt(quantityCounterTV.getText().toString())), offer.getName(), Calendar.getInstance().getTime().toString(), false, quantityCounterTV.getText().toString(), true, offer.getRestaurantId(), uuid, offerId);
+                orderDatabaseRef.child(uuid).setValue(order);
+                databaseReference.child(offerId).child("quantity").setValue(Integer.toString(maxQuantity - Integer.parseInt(quantityCounterTV.getText().toString())));
+
+                Toast.makeText(getApplicationContext(), R.string.order_placed, Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, OfferDetailsActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("storeId", storeId);
+                extras.putString("offerId", offerId);
+                extras.putString("restaurantAddress", restaurantAddress);
+                extras.putString("restaurantName", restaurantName);
+                intent.putExtras(extras);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
+}
